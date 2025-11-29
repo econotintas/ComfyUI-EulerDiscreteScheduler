@@ -1,6 +1,7 @@
 # FlowMatch Euler Discrete Scheduler for ComfyUI
 
-Euler Discrete seems not exposed in comfy, but it is what the official demo in diffusers use. so I am exposing it in the scheduler section and provide a node, experimental, to configure the scheduler for use with CustomSampler
+Euler Discrete seems not exposed in comfy, but it is what the official demo in diffusers use.
+So I am exposing it in the scheduler section and provide a node, experimental, to configure the scheduler for use with CustomSampler
 
 <img width="1792" height="1120" alt="example" src="https://github.com/user-attachments/assets/91d4f679-9c9e-40ef-bed6-12bb860c37e7" />
 
@@ -23,3 +24,7 @@ Model -> SamplerCustom
          |
          FlowMatch Euler Scheduler (steps=30, use_karras_sigmas=True)
 ```
+
+## Tech bits:
+- https://huggingface.co/docs/diffusers/api/schedulers/flow_match_euler_discrete
+- https://huggingface.co/Tongyi-MAI/Z-Image-Turbo/blob/main/scheduler/scheduler_config.json
