@@ -43,3 +43,9 @@ Model -> SamplerCustom
   [Buy me a beer!](https://donate.stripe.com/cNi9ALaASf65clXahPcV201)
   
 <img width="1920" height="1088" alt="ComfyUI_00716_" src="https://github.com/user-attachments/assets/bb2fc530-8a90-4180-96fb-adf6c48f5b09" />
+
+<img width="1536" height="1088" alt="image" src="https://github.com/user-attachments/assets/1ab561e7-b51d-413c-b788-13ed4fb6e129" />
+
+<img width="1536" height="1088" alt="image" src="https://github.com/user-attachments/assets/1931af7e-1b3e-47c9-ac20-27add5135a71" />
+
+
