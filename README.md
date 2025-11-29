@@ -1,7 +1,8 @@
 # FlowMatch Euler Discrete Scheduler for ComfyUI
 
-Euler Discrete seems not exposed in comfy, but it is what the official demo in diffusers use.
+**FlowMatchEulerDiscrete** seems not exposed in comfy, but it is what the official demo in diffusers use.
 So I am exposing it in the scheduler section and provide a node, experimental, to configure the scheduler for use with CustomSampler
+So...if you want **sharper and more noise free images**, you can experiment with this.
 
 <img width="1792" height="1120" alt="example" src="https://github.com/user-attachments/assets/91d4f679-9c9e-40ef-bed6-12bb860c37e7" />
 
