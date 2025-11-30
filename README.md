@@ -54,7 +54,8 @@ More examples:
 
 ## Changelog
 **1.0.4**
-add start and end step by etupa, with some fixes
+add start and end step by Etupa, with some fixes
+
 **1.0.3**
 
 - node publish action
