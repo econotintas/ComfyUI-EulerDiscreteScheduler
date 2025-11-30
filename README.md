@@ -54,7 +54,12 @@ More examples:
 
 ## Changelog
 
-1.0.2
+**1.0.3**
+
+- node publish action
+
+**1.0.2**
+
 - changed the device management in the custom scheduler node to be on gpu (cuda)
 - removed flash attention node dependency from the custom scheduler node
 - removed flash attention node from init
