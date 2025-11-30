@@ -133,6 +133,10 @@ class FlowMatchEulerSchedulerNode:
                     "default": "disable",
                     "tooltip": "Uses Karras noise schedule for smoother results. Similar to DPM++ samplers, often improves quality."
                 }),
+                "device": (["auto", "cuda", "cpu"], {
+                    "default": "auto",
+                    "tooltip": "Device for sigma computation. 'auto' detects GPU if available, otherwise CPU. Using GPU avoids CPU->GPU transfers."
+                }),
             }
         }
 
@@ -161,6 +165,7 @@ class FlowMatchEulerSchedulerNode:
         use_dynamic_shifting,
         use_exponential_sigmas,
         use_karras_sigmas,
+        device="auto",
     ):
         # Convert string combo values to boolean
         config = {
@@ -184,6 +189,18 @@ class FlowMatchEulerSchedulerNode:
         
         # 1. Generate the full sigma schedule
         scheduler.set_timesteps(steps, device="cpu", mu=0.0)
+        # Determine device to use for sigma computation
+        if device == "auto":
+            # Auto-detect: use CUDA if available, otherwise CPU
+            target_device = "cuda" if torch.cuda.is_available() else "cpu"
+            print(f"[FlowMatch Scheduler] Auto-detected device: {target_device.upper()}")
+        else:
+            target_device = device
+            print(f"[FlowMatch Scheduler] Using manually specified device: {target_device.upper()}")
+        
+        # Set timesteps and get sigmas for the specified number of steps
+        # Using the model's device avoids unnecessary CPU->GPU transfers during sampling
+        scheduler.set_timesteps(steps, device=target_device, mu=0.0)
         sigmas = scheduler.sigmas
         
         # 2. Apply start_at_step and end_at_step (Slicing the sigmas tensor)
@@ -203,15 +220,17 @@ class FlowMatchEulerSchedulerNode:
 
 
 # Import Flash Attention node
-from .flash_attention_node import NODE_CLASS_MAPPINGS as FLASH_ATTN_MAPPINGS
-from .flash_attention_node import NODE_DISPLAY_NAME_MAPPINGS as FLASH_ATTN_DISPLAY_MAPPINGS
+# from .flash_attention_node import NODE_CLASS_MAPPINGS as FLASH_ATTN_MAPPINGS
+# from .flash_attention_node import NODE_DISPLAY_NAME_MAPPINGS as FLASH_ATTN_DISPLAY_MAPPINGS
 
 NODE_CLASS_MAPPINGS = {
     "FlowMatchEulerDiscreteScheduler (Custom)": FlowMatchEulerSchedulerNode,
-    **FLASH_ATTN_MAPPINGS
+    # **FLASH_ATTN_MAPPINGS
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "FlowMatchEulerDiscreteScheduler (Custom)": "FlowMatch Euler Discrete Scheduler (Custom)",
     **FLASH_ATTN_DISPLAY_MAPPINGS
+}
+    # **FLASH_ATTN_DISPLAY_MAPPINGS
 }
