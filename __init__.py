@@ -14,11 +14,16 @@ import numpy as np # <-- Required for robust slicing of PyTorch tensors
 
 try:
     from diffusers.schedulers.scheduling_flow_match_euler_discrete import FlowMatchEulerDiscreteScheduler
-except ImportError:
-    import subprocess
-    import sys
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "diffusers"])
-    from diffusers.schedulers.scheduling_flow_match_euler_discrete import FlowMatchEulerDiscreteScheduler
+except ImportError as e:
+    print("=" * 80)
+    print("ERROR: Failed to import FlowMatchEulerDiscreteScheduler from diffusers")
+    print("Please ensure dependencies are installed by running:")
+    print("  pip install -r requirements.txt")
+    print("=" * 80)
+    raise ImportError(
+        "FlowMatchEulerDiscreteScheduler not found. "
+        "Please install dependencies from requirements.txt"
+    ) from e
 
 from comfy.samplers import SchedulerHandler, SCHEDULER_HANDLERS, SCHEDULER_NAMES
 

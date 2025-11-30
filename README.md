@@ -53,6 +53,10 @@ More examples:
 <img width="1536" height="1088" alt="image" src="https://github.com/user-attachments/assets/1931af7e-1b3e-47c9-ac20-27add5135a71" />
 
 ## Changelog
+
+**1.0.5**
+- remove bad practice of forking diffusers install on error (requirements.txt and does not rollback your diffusers if available)
+
 **1.0.4**
 add start and end step by Etupa, with some fixes
 
