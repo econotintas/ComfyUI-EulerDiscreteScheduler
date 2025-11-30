@@ -3,7 +3,7 @@
 
 9 steps, big res, zero noise.
 
-**FlowMatchEulerDiscrete** seems not exposed in ComfyUI, but it is what the official demo in diffusers use.
+**FlowMatchEulerDiscrete** seems not exposed in ComfyUI, but it is what the official Z-Image demo in diffusers use.
 
 So:
 - I am exposing it in the scheduler section for you to use within KSampler.
