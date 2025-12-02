@@ -189,6 +189,46 @@ def apply_nunchaku_patches():
         
         nn.Module.__call__ = patched_module_call
         
+        # Also patch TiledDiffusion if present
+        try:
+            import sys
+            if 'ComfyUI-TiledDiffusion.tiled_diffusion' in sys.modules:
+                tiled_diff = sys.modules['ComfyUI-TiledDiffusion.tiled_diffusion']
+                if hasattr(tiled_diff, 'TiledDiffusion'):
+                    original_tiled_call = tiled_diff.TiledDiffusion.__call__
+                    
+                    def patched_tiled_call(self, model_function, kwargs):
+                        """Wrap TiledDiffusion to handle 5D tensors from Qwen Image models"""
+                        x_in = kwargs.get('input', None)
+                        
+                        # Check if we have a 5D tensor
+                        if x_in is not None and len(x_in.shape) == 5:
+                            # Shape is [N, C, F, H, W], squeeze F dimension if it's 1
+                            N, C, F, H, W = x_in.shape
+                            
+                            if F == 1:
+                                print(f"[Nunchaku Compat] TiledDiffusion: Squeezing 5D tensor {list(x_in.shape)} -> 4D")
+                                kwargs['input'] = x_in.squeeze(2)  # Remove F dimension
+                                
+                                # Call original with 4D tensor
+                                result = original_tiled_call(self, model_function, kwargs)
+                                
+                                # Restore 5D shape if result is 4D
+                                if isinstance(result, torch.Tensor) and len(result.shape) == 4:
+                                    result = result.unsqueeze(2)  # Add F dimension back
+                                    print(f"[Nunchaku Compat] TiledDiffusion: Restored to 5D shape {list(result.shape)}")
+                                
+                                return result
+                            else:
+                                print(f"[Nunchaku Compat] TiledDiffusion: Warning - 5D tensor with F={F} (not 1), cannot safely squeeze")
+                        
+                        return original_tiled_call(self, model_function, kwargs)
+                    
+                    tiled_diff.TiledDiffusion.__call__ = patched_tiled_call
+                    print("[Nunchaku Compat] Successfully patched TiledDiffusion for 5D tensor support")
+        except Exception as e:
+            print(f"[Nunchaku Compat] Could not patch TiledDiffusion (not installed or incompatible): {e}")
+        
         print("[Nunchaku Compat] Successfully installed Nunchaku compatibility patches")
         _patch_applied = True
             

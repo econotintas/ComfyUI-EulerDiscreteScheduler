@@ -54,7 +54,13 @@ More examples:
 
 ## Changelog
 
-**1.0.5**
+**1.0.7**
+
+- nunchaku qwen patch fix, tiled diffusion patch fix
+  users reported issues with dimensions not being handled correctly, this should fix it.
+
+
+**1.0.6**
 
 - updated example
 - updated pytproject deps
