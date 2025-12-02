@@ -27,6 +27,13 @@ except ImportError as e:
 
 from comfy.samplers import SchedulerHandler, SCHEDULER_HANDLERS, SCHEDULER_NAMES
 
+# Import Nunchaku compatibility patches (auto-applies on import)
+try:
+    from . import nunchaku_compat
+except Exception as e:
+    print(f"[FlowMatch Scheduler] Warning: Could not load Nunchaku compatibility: {e}")
+
+
 # Default config for registering in ComfyUI
 default_config = {    
     "base_image_seq_len": 256,
