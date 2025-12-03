@@ -93,6 +93,7 @@ class FlowMatchEulerSchedulerNode:
                 }),
                 "base_shift": ("FLOAT", {
                     "default": 0.5,
+                    "step": 0.01,
                     "tooltip": "Stabilizes generation. Higher values = more consistent/predictable outputs. Z-Image-Turbo uses default 0.5."
                 }),
                 "invert_sigmas": (["disable", "enable"], {
@@ -105,6 +106,7 @@ class FlowMatchEulerSchedulerNode:
                 }),
                 "max_shift": ("FLOAT", {
                     "default": 1.15,
+                    "step": 0.01,
                     "tooltip": "Maximum variation allowed. Higher = more exaggerated/stylized results. Z-Image-Turbo uses default 1.15."
                 }),
                 "num_train_timesteps": ("INT", {
@@ -113,10 +115,12 @@ class FlowMatchEulerSchedulerNode:
                 }),
                 "shift": ("FLOAT", {
                     "default": 3.0,
+                    "step": 0.01,
                     "tooltip": "Global timestep schedule shift. Z-Image-Turbo uses 3.0 for optimal performance with the Turbo model."
                 }),
                 "shift_terminal": ("FLOAT", {
                     "default": 0.0,
+                    "step": 0.01,
                     "tooltip": "End value for shifted schedule. Set to 0.0 to disable. Advanced parameter for timestep schedule control."
                 }),
                 "stochastic_sampling": (["disable", "enable"], {
@@ -235,3 +239,18 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
     "FlowMatchEulerDiscreteScheduler (Custom)": "FlowMatch Euler Discrete Scheduler (Custom)",
 }
+
+from .extract_metadata_node import NODE_CLASS_MAPPINGS as METADATA_NODE_MAPPINGS
+from .extract_metadata_node import NODE_DISPLAY_NAME_MAPPINGS as METADATA_DISPLAY_MAPPINGS
+
+NODE_CLASS_MAPPINGS.update(METADATA_NODE_MAPPINGS)
+NODE_DISPLAY_NAME_MAPPINGS.update(METADATA_DISPLAY_MAPPINGS)
+
+# Import Nunchaku nodes
+try:
+    from .nunchaku_compat import NODE_CLASS_MAPPINGS as NUNCHAKU_NODES
+    from .nunchaku_compat import NODE_DISPLAY_NAME_MAPPINGS as NUNCHAKU_NAMES
+    NODE_CLASS_MAPPINGS.update(NUNCHAKU_NODES)
+    NODE_DISPLAY_NAME_MAPPINGS.update(NUNCHAKU_NAMES)
+except Exception as e:
+    print(f"[FlowMatch Scheduler] Could not load Nunchaku nodes: {e}")

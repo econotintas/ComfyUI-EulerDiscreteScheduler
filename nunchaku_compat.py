@@ -8,7 +8,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-_original_apply_model = None
+_original_module_call = None
+_original_tiled_call = None
 _patch_applied = False
 
 def is_nunchaku_qwen_model(model):
@@ -149,9 +150,13 @@ def patch_diffusion_model_forward(original_forward):
     return wrapper
 
 
+# Global variables to store original functions
+_original_module_call = None
+_original_tiled_call = None
+
 def apply_nunchaku_patches():
     """Apply monkey patches to fix Nunchaku compatibility issues"""
-    global _patch_applied
+    global _patch_applied, _original_module_call, _original_tiled_call
     
     if _patch_applied:
         print("[Nunchaku Compat] Patches already applied")
@@ -162,9 +167,12 @@ def apply_nunchaku_patches():
         # The patch will be applied when models are loaded
         import torch.nn as nn
         
+        # Store original if not already stored
+        if _original_module_call is None:
+            _original_module_call = nn.Module.__call__
+        
         # Patch torch.nn.Module's __call__ for modules that have txt_norm
         # This is tricky - we'll patch specific Nunchaku model classes when we detect them
-        original_module_call = nn.Module.__call__
         
         def patched_module_call(self, *args, **kwargs):
             # ONLY patch Nunchaku diffusion models - very specific detection
@@ -182,10 +190,10 @@ def apply_nunchaku_patches():
                     print(f"[Nunchaku Compat] Detected and patching Nunchaku diffusion model: {type(self).__name__}")
                     self._nunchaku_patched = True
                 
-                return patch_diffusion_model_forward(original_module_call)(self, *args, **kwargs)
+                return patch_diffusion_model_forward(_original_module_call)(self, *args, **kwargs)
             
             # For all other modules (VAE, etc.), use original __call__ without modification
-            return original_module_call(self, *args, **kwargs)
+            return _original_module_call(self, *args, **kwargs)
         
         nn.Module.__call__ = patched_module_call
         
@@ -195,7 +203,8 @@ def apply_nunchaku_patches():
             if 'ComfyUI-TiledDiffusion.tiled_diffusion' in sys.modules:
                 tiled_diff = sys.modules['ComfyUI-TiledDiffusion.tiled_diffusion']
                 if hasattr(tiled_diff, 'TiledDiffusion'):
-                    original_tiled_call = tiled_diff.TiledDiffusion.__call__
+                    if _original_tiled_call is None:
+                        _original_tiled_call = tiled_diff.TiledDiffusion.__call__
                     
                     def patched_tiled_call(self, model_function, kwargs):
                         """Wrap TiledDiffusion to handle 5D tensors from Qwen Image models"""
@@ -211,7 +220,7 @@ def apply_nunchaku_patches():
                                 kwargs['input'] = x_in.squeeze(2)  # Remove F dimension
                                 
                                 # Call original with 4D tensor
-                                result = original_tiled_call(self, model_function, kwargs)
+                                result = _original_tiled_call(self, model_function, kwargs)
                                 
                                 # Restore 5D shape if result is 4D
                                 if isinstance(result, torch.Tensor) and len(result.shape) == 4:
@@ -222,7 +231,7 @@ def apply_nunchaku_patches():
                             else:
                                 print(f"[Nunchaku Compat] TiledDiffusion: Warning - 5D tensor with F={F} (not 1), cannot safely squeeze")
                         
-                        return original_tiled_call(self, model_function, kwargs)
+                        return _original_tiled_call(self, model_function, kwargs)
                     
                     tiled_diff.TiledDiffusion.__call__ = patched_tiled_call
                     print("[Nunchaku Compat] Successfully patched TiledDiffusion for 5D tensor support")
@@ -238,5 +247,71 @@ def apply_nunchaku_patches():
         traceback.print_exc()
 
 
-# Auto-apply patches on import
-apply_nunchaku_patches()
+def remove_nunchaku_patches():
+    """Remove Nunchaku compatibility patches"""
+    global _patch_applied, _original_module_call, _original_tiled_call
+    
+    if not _patch_applied:
+        print("[Nunchaku Compat] Patches not applied, nothing to remove")
+        return
+
+    try:
+        import torch.nn as nn
+        
+        # Restore nn.Module.__call__
+        if _original_module_call is not None:
+            nn.Module.__call__ = _original_module_call
+            print("[Nunchaku Compat] Restored original nn.Module.__call__")
+        
+        # Restore TiledDiffusion.__call__
+        try:
+            import sys
+            if 'ComfyUI-TiledDiffusion.tiled_diffusion' in sys.modules:
+                tiled_diff = sys.modules['ComfyUI-TiledDiffusion.tiled_diffusion']
+                if hasattr(tiled_diff, 'TiledDiffusion') and _original_tiled_call is not None:
+                    tiled_diff.TiledDiffusion.__call__ = _original_tiled_call
+                    print("[Nunchaku Compat] Restored original TiledDiffusion.__call__")
+        except Exception as e:
+            print(f"[Nunchaku Compat] Error restoring TiledDiffusion: {e}")
+            
+        _patch_applied = False
+        print("[Nunchaku Compat] Successfully removed Nunchaku compatibility patches")
+        
+    except Exception as e:
+        print(f"[Nunchaku Compat] Error removing patches: {e}")
+        import traceback
+        traceback.print_exc()
+
+
+class NunchakuQwenPatches:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "mode": (["enable", "disable"], {"default": "enable"}),
+            },
+            "optional": {
+                "model": ("MODEL",),
+                "image": ("IMAGE",),
+            }
+        }
+    
+    RETURN_TYPES = ("MODEL", "IMAGE",)
+    RETURN_NAMES = ("model", "image",)
+    FUNCTION = "execute"
+    CATEGORY = "utils"
+    
+    def execute(self, mode, model=None, image=None):
+        if mode == "enable":
+            apply_nunchaku_patches()
+        else:
+            remove_nunchaku_patches()
+        return (model, image)
+
+NODE_CLASS_MAPPINGS = {
+    "NunchakuQwenPatches": NunchakuQwenPatches
+}
+
+NODE_DISPLAY_NAME_MAPPINGS = {
+    "NunchakuQwenPatches": "Nunchaku Qwen Patches"
+}
