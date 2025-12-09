@@ -88,9 +88,25 @@ if "FlowMatchEulerDiscreteScheduler" not in SCHEDULER_HANDLERS:
     SCHEDULER_HANDLERS["FlowMatchEulerDiscreteScheduler"] = handler
     SCHEDULER_NAMES.append("FlowMatchEulerDiscreteScheduler")
 
+# Explicitly add to KSampler.SCHEDULERS to ensure compatibility with nodes 
+# that might replace the list object (like RES4LYF)
+try:
+    from comfy.samplers import KSampler
+    if "FlowMatchEulerDiscreteScheduler" not in KSampler.SCHEDULERS:
+        KSampler.SCHEDULERS.append("FlowMatchEulerDiscreteScheduler")
+except ImportError:
+    pass
+
 if "VQDiffusionScheduler" not in SCHEDULER_HANDLERS:
     SCHEDULER_HANDLERS["VQDiffusionScheduler"] = SchedulerHandler(handler=vq_diffusion_scheduler_handler, use_ms=True)
     SCHEDULER_NAMES.append("VQDiffusionScheduler")
+
+try:
+    from comfy.samplers import KSampler
+    if "VQDiffusionScheduler" not in KSampler.SCHEDULERS:
+        KSampler.SCHEDULERS.append("VQDiffusionScheduler")
+except ImportError:
+    pass
 
 class FlowMatchEulerSchedulerNode:
     @classmethod

@@ -10,4 +10,4 @@
 **Date**: 2025-12-09
 **Description**: Investigate and fix compatibility issue with RES4LYF custom node package where flowmatcheeulerdiscretescheduler disappears from ksampler list.
 **Branch**: feature/req2-res4lyf-compat
-**Status**: In Progress
+**Status**: Completed
