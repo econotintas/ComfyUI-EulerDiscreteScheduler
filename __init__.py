@@ -97,16 +97,16 @@ try:
 except ImportError:
     pass
 
-if "VQDiffusionScheduler" not in SCHEDULER_HANDLERS:
-    SCHEDULER_HANDLERS["VQDiffusionScheduler"] = SchedulerHandler(handler=vq_diffusion_scheduler_handler, use_ms=True)
-    SCHEDULER_NAMES.append("VQDiffusionScheduler")
+# if "VQDiffusionScheduler" not in SCHEDULER_HANDLERS:
+#     SCHEDULER_HANDLERS["VQDiffusionScheduler"] = SchedulerHandler(handler=vq_diffusion_scheduler_handler, use_ms=True)
+#     SCHEDULER_NAMES.append("VQDiffusionScheduler")
 
-try:
-    from comfy.samplers import KSampler
-    if "VQDiffusionScheduler" not in KSampler.SCHEDULERS:
-        KSampler.SCHEDULERS.append("VQDiffusionScheduler")
-except ImportError:
-    pass
+# try:
+#     from comfy.samplers import KSampler
+#     if "VQDiffusionScheduler" not in KSampler.SCHEDULERS:
+#         KSampler.SCHEDULERS.append("VQDiffusionScheduler")
+# except ImportError:
+#     pass
 
 class FlowMatchEulerSchedulerNode:
     @classmethod
@@ -309,12 +309,12 @@ class VQDiffusionSchedulerNode:
 
 NODE_CLASS_MAPPINGS = {
     "FlowMatchEulerDiscreteScheduler (Custom)": FlowMatchEulerSchedulerNode,
-    "VQDiffusionScheduler": VQDiffusionSchedulerNode,
+    # "VQDiffusionScheduler": VQDiffusionSchedulerNode,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "FlowMatchEulerDiscreteScheduler (Custom)": "FlowMatch Euler Discrete Scheduler (Custom)",
-    "VQDiffusionScheduler": "VQ Diffusion Scheduler (Experimental)",
+    # "VQDiffusionScheduler": "VQ Diffusion Scheduler (Experimental)",
 }
 
 from .extract_metadata_node import NODE_CLASS_MAPPINGS as METADATA_NODE_MAPPINGS

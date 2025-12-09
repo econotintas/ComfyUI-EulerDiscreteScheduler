@@ -60,7 +60,8 @@ More examples:
 <img width="1536" height="1088" alt="image" src="https://github.com/user-attachments/assets/1931af7e-1b3e-47c9-ac20-27add5135a71" />
 
 ## Changelog
-
+**1.0.8**
+- attempt fixing incompatibility with res4lyf by adding the scheduler to the list.
 **1.0.7**
 
 - nunchaku qwen patch fix, tiled diffusion patch fix
