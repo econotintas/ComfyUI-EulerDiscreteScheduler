@@ -61,7 +61,9 @@ More examples:
 
 ## Changelog
 **1.0.8**
+
 - attempt fixing incompatibility with res4lyf by adding the scheduler to the list.
+  
 **1.0.7**
 
 - nunchaku qwen patch fix, tiled diffusion patch fix
